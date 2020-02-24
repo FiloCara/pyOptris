@@ -1,6 +1,6 @@
 # pyOptris
 
-This package is under developement.
+Warning: This package is under developement.
 
 ## Installation Guide
 
