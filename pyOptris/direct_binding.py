@@ -6,7 +6,7 @@ import numpy as np
 if (sys.platform == "linux"):
     lib = ctypes.CDLL("/usr/lib/libirdirectsdk.so")
 
-elif (sys.platform == "Windows"):
+elif (sys.platform == "win32"):
     lib = ctypes.CDLL("C:\\irDirectSDK\\sdk\\x64\\libirimager.dll")
 
 #
