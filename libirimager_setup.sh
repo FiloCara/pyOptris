@@ -2,7 +2,7 @@ echo "#########################################"
 echo "#########Setup Optris PI camera##########"
 echo "#########################################"
 
-#UCV configuration
+# UCV configuration
 sudo bash -c 'echo "options uvcvideo nodrop=1" > /etc/modprobe.d/uvcvideo.conf'
 sudo rmmod uvcvideo; sudo modprobe uvcvideo nodrop=1
 
@@ -23,5 +23,5 @@ sudo dpkg -i libirimager-7.2.0-amd64.deb
 # Download calibration
 sudo ir_download_calibration
 
-# Generating configuration files
+# Generating configuration file
 sudo ir_generate_configuration > `ir_find_serial`.xml
