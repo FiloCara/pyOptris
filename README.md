@@ -15,7 +15,8 @@ This package provide a pythonic interface to the Evocortex libirimager direct bi
 ### Linux (Ubuntu 18.04)
 - Clone this repository on your local PC
 - `cd your/local/path/pyOptris`
-- run `bash libirimager_setup` to automacally download and setup the libirimager library
+- Attach your Optris device to the USB port
+- run `bash libirimager_setup` to automacally download and setup the libirimager library.
 - run `pip3 install .`
 
 ## Troubleshooting
@@ -26,7 +27,7 @@ sudo apt install libcanberra-gtk-module libcanberra-gtk3-module
 
 ## Examples
 
-The folder provides an example script (example.py)
+The folder provides an example script (example.py). The example needs *OpenCV* installed.
 
 ```python
 import pyOptris as optris
