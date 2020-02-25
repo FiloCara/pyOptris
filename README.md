@@ -4,20 +4,22 @@
 
 This package provide a pythonic interface to the Evocortex libirimager direct binding. 
 
+The project is largely inspired by an old Github project which is no longer available.
+
 ## Installation Guide
 
 ### Windows
 - Install the irDirectSDK from the Evocortex website (this package has been tested with libirimager7.2)
 - Clone this repository on you local PC
 - cd inside the repository
-- run `pip install .`
+- ``cd your/local/path/pyOptris``
 
 ### Linux (Ubuntu 18.04)
 - Clone this repository on your local PC
 - `cd your/local/path/pyOptris`
 - Attach your Optris device to the USB port
-- run `bash libirimager_setup` to automacally download and setup the libirimager library.
-- run `pip3 install .`
+- run `bash libirimager_setup` to automacally download and setup the libirimager library. The script also generate the XML config file.
+- `pip3 install .`
 
 ## Troubleshooting
 For any libirimager installation problems please refers to the [Evocortex documentation](http://documentation.evocortex.com/libirimager2/html/)
