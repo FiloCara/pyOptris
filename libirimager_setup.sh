@@ -23,6 +23,5 @@ sudo dpkg -i libirimager-7.2.0-amd64.deb
 # Download calibration
 sudo ir_download_calibration
 
-# Copy calibration to current dir
-
-# cp ./python ~/
+# Generating configuration files
+sudo ir_generate_configuration > `ir_find_serial`.xml
