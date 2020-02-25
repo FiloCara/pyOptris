@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <imager xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <!--<serial>19052053</serial> -->  <!-- Provide serial number, if you attach more than one camera -->
+  <serial>19052053</serial>  <!-- Provide serial number, if you attach more than one camera -->
   <videoformatindex>0</videoformatindex> <!-- index of the used video format (USB endpoint) -->
   <formatspath>/usr/share/libirimager</formatspath>
   <calipath>/usr/share/libirimager/cali</calipath>
-  <dppath>/home/filippo/.irimager/Cali</dppath>
+  <!-- <dppath>/home/filippo/.irimager/Cali</dppath> -->
   <!-- Uncomment the following lines to specify user-defined parameters for the desired optic
        and temperature range. Be aware to specify meaningful parameters.
        See documentation for further information: http://evocortex.com/libirimager2/html/index.html
@@ -13,7 +13,7 @@
   
   <fov>60</fov>
   <temperature>
-    <min>-0</min>
+    <min>0</min>
     <max>250</max>
   </temperature>
   <optics_text></optics_text>
