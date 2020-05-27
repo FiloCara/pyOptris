@@ -7,7 +7,7 @@ if (sys.platform == "linux"):
     lib = ctypes.CDLL("/usr/lib/libirdirectsdk.so")
 
 elif (sys.platform == "win32"):
-    lib = ctypes.CDLL("C:\\irDirectSDK\\sdk\\x64\\libirimager.dll")
+    lib = ctypes.CDLL("..//..//irDirectSDK//sdk//x64//libirimager.dll")
 
 #
 # @brief Initializes an IRImager instance connected to this computer via USB
