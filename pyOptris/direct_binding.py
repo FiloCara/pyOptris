@@ -128,7 +128,7 @@ def get_thermal_palette_image(width: int, height: int) -> (np.ndarray, np.ndarra
     paletteData = np.empty((height, width, 3), dtype=np.uint8)
     thermalDataPointer = thermalData.ctypes.data_as(ctypes.POINTER(ctypes.c_ushort))
     paletteDataPointer = paletteData.ctypes.data_as(ctypes.POINTER(ctypes.c_ubyte))
-    _ = lib.evo_irimager_get_palette_image(w, h, thermalDataPointer, w, h, paletteDataPointer)
+    _ = lib.evo_irimager_get_thermal_palette_image(w, h, thermalDataPointer, w, h, paletteDataPointer)
     return (thermalData, paletteData)
 
 #
