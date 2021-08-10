@@ -29,8 +29,13 @@ sudo apt install libcanberra-gtk-module libcanberra-gtk3-module
 
 ## Examples
 
-The folder provides an example script (utils/example.py). The example needs *OpenCV* installed.
+The folder provides two example scripts. 
 
+*/utils/example_palette.py* shows how to get thermal images in RGB format (a colormap is applied over the termperature values). The example needs *OpenCV* installed.
+
+ */utils/example_thermal.py* allows to get the thermal frame with Celsius temperature for each pixel. 
+
+### /utils/example_palette.py 
 ```python
 import pyOptris.direct_binding as optris
 import cv2
@@ -48,6 +53,7 @@ print('{} x {}'.format(w, h))
 
 while True:
     # Get the palette image (RGB image)
+    # frame --> 3D numpy array (h, w, 3) 
     frame = optris.get_palette_image(w, h)
     cv2.imshow('IR streaming', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -55,4 +61,29 @@ while True:
 
 optris.terminate()
 cv2.destroyAllWindows()
+```
+
+### /utils/example_thermal.py 
+```python
+import pyOptris.direct_binding as optris
+
+DLL_path = "../irDirectSDK/sdk/x64/libirimager.dll"
+optris.load_DLL(DLL_path)
+
+# USB connection initialisation
+optris.usb_init('config_file.xml')
+
+w, h = optris.get_thermal_image_size()
+print('{} x {}'.format(w, h))
+
+while True:
+    # Get the thermal frame (numpy array)
+    # thermal_frame --> 2D numpy array (h, w) 
+    thermal_frame = optris.get_thermal_image(w, h)
+    # Conversion to temperature values are to be performed as follows:
+    # t = ((double)data[x] - 1000.0) / 10.0;
+    processed_thermal_frame = (thermal_frame - 1000.0) / 10.0 
+    print(processed_thermal_frame)
+
+optris.terminate()
 ```
