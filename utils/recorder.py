@@ -1,7 +1,6 @@
-import cv2
-import socket
 import time
 import argparse
+import cv2
 from datetime import datetime
 import numpy as np
 import pyOptris as optris
@@ -79,21 +78,6 @@ class CSVRecorder(_BaseRecorder):
         for i, elem in enumerate(self.results):
             np.savetxt(path + "thermal_IR_{}_{}.csv".format(i, round(elem['time'], 2)),
                  (elem["frame"] - 1000.0) / 10.0, delimiter=';', fmt='%1.2f')
-
-# TODO: to be finished
-class TCPRecorder(_BaseRecorder):
-
-    def __init__(self, xml_path, ip):
-        super().__init__(xml_path)
-
-        self.ip = ip
-        # Define a TCP server
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    def run(self):
-        while True:
-            pass
-
 
 if __name__ == '__main__':
 

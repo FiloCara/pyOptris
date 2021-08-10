@@ -1,13 +1,26 @@
 import sys
 import ctypes
+from typing import Tuple
 from enum import Enum
 import numpy as np
 
-if (sys.platform == "linux"):
-    lib = ctypes.CDLL("/usr/lib/libirdirectsdk.so")
+DEFAULT_WIN_PATH = "..//..//irDirectSDK//sdk//x64//libirimager.dll"
+DEFAULT_LINUX_PATH = "/usr/lib/libirdirectsdk.so"
+lib = None
 
-elif (sys.platform == "win32"):
-    lib = ctypes.CDLL("..//..//irDirectSDK//sdk//x64//libirimager.dll")
+# Function to load the DLL accordingly to the OS
+def load_DLL(dll_path: str):
+    global lib
+    if (sys.platform == "linux"):
+        path = dll_path if dll_path is not None else DEFAULT_LINUX_PATH
+        lib = ctypes.CDLL(DEFAULT_LINUX_PATH)
+
+    elif (sys.platform == "win32"):
+        path = dll_path if dll_path is not None else DEFAULT_WIN_PATH
+        lib = ctypes.CDLL(path)
+    
+# Load DLL
+load_DLL(None)
 
 #
 # @brief Initializes an IRImager instance connected to this computer via USB
@@ -30,7 +43,6 @@ def usb_init(xml_config: str, formats_def: str = None, log_file: str = None) -> 
 # __IRDIRECTSDK_API__ int evo_irimager_tcp_init(const char* ip, int port);
 #
 def tcp_init(ip: str, port: int) -> int:
-    print("IP encoded", ip.encode())
     return lib.evo_irimager_tcp_init(ip.encode(), port)
 
 #
@@ -50,7 +62,7 @@ def terminate() -> int:
 #
 # __IRDIRECTSDK_API__ int evo_irimager_get_thermal_image_size(int* w, int* h);
 #
-def get_thermal_image_size() -> (int, int):
+def get_thermal_image_size() -> Tuple[int, int]:
     width = ctypes.c_int()
     height = ctypes.c_int()
     _ = lib.evo_irimager_get_thermal_image_size(ctypes.byref(width), ctypes.byref(height))
@@ -64,7 +76,7 @@ def get_thermal_image_size() -> (int, int):
 #
 # __IRDIRECTSDK_API__ int evo_irimager_get_palette_image_size(int* w, int* h);
 #
-def get_palette_image_size() -> (int, int):
+def get_palette_image_size() -> Tuple[int, int]:
     width = ctypes.c_int()
     height = ctypes.c_int()
     _ = lib.evo_irimager_get_palette_image_size(ctypes.byref(width), ctypes.byref(height))
@@ -121,7 +133,7 @@ def get_palette_image(width: int, height: int) -> np.ndarray:
 #
 #__IRDIRECTSDK_API__ int evo_irimager_get_thermal_palette_image(int w_t, int h_t, unsigned short* data_t, int w_p, int h_p, unsigned char* data_p );
 #
-def get_thermal_palette_image(width: int, height: int) -> (np.ndarray, np.ndarray):
+def get_thermal_palette_image(width: int, height: int) -> Tuple[int, int]:
     w = ctypes.byref(ctypes.c_int(width))
     h = ctypes.byref(ctypes.c_int(height))
     thermalData = np.empty((height, width), dtype=np.uint16)
@@ -209,7 +221,7 @@ def set_shutter_mode(shutterMode: ShutterMode) -> int:
 # __IRDIRECTSDK_API__ int evo_irimager_trigger_shutter_flag();
 #
 def trigger_shutter_flag() -> int:
-    return lib.evo_irimager_trigger_shutter_flag(None)
+    return lib.evo_irimager_trigger_shutter_flag()
 
 #
 # @brief sets the minimum and maximum remperature range to the camera (also configurable in xml-config)

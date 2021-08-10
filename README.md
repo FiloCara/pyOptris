@@ -9,16 +9,16 @@ The project is largely inspired by an old Github project which is no longer avai
 ## Installation Guide
 
 ### Windows
-- Install the irDirectSDK from the Evocortex website (this package has been tested with libirimager7.2)
+- Download the irDirectSDK from the Evocortex website (this package has been tested with libirimager7.2)
 - Clone this repository on you local PC
 - cd inside the repository
-- ``cd your/local/path/pyOptris``
+- `pip install .`
 
 ### Linux (Ubuntu 18.04)
 - Clone this repository on your local PC
 - `cd your/local/path/pyOptris`
 - Attach your Optris device to the USB port
-- run `bash libirimager_setup` to automacally download and setup the libirimager library. The script also generate the XML config file.
+- run `bash libirimager_setup` to automacally download and setup the libirimager library from the Evocortex website. The script also generate the XML config file.
 - `pip3 install .`
 
 ## Troubleshooting
@@ -29,7 +29,7 @@ sudo apt install libcanberra-gtk-module libcanberra-gtk3-module
 
 ## Examples
 
-The folder provides an example script (example.py). The example needs *OpenCV* installed.
+The folder provides an example script (utils/example.py). The example needs *OpenCV* installed.
 
 ```python
 import pyOptris as optris
