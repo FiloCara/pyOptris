@@ -2,7 +2,7 @@
 
 **Warning**: The package is under developement.
 
-This package provide a pythonic interface to the Evocortex libirimager direct binding. 
+This package provides a pythonic interface to the Evocortex libirimager direct binding. 
 
 The project is largely inspired by an old Github project which is no longer available.
 
