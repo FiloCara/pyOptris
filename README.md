@@ -62,7 +62,6 @@ while True:
 optris.terminate()
 cv2.destroyAllWindows()
 ```
-<<<<<<< HEAD
 
 ### /utils/example_thermal.py 
 ```python
@@ -88,5 +87,3 @@ while True:
 
 optris.terminate()
 ```
-=======
->>>>>>> 7d183a9cced6231b960102299bd7d48334ffb4d7
