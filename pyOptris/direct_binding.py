@@ -19,9 +19,6 @@ def load_DLL(dll_path: str):
         path = dll_path if dll_path is not None else DEFAULT_WIN_PATH
         lib = ctypes.CDLL(path)
     
-# Load DLL
-load_DLL(None)
-
 #
 # @brief Initializes an IRImager instance connected to this computer via USB
 # @param[in] xml_config path to xml config
