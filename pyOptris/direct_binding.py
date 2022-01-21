@@ -130,14 +130,16 @@ def get_palette_image(width: int, height: int) -> np.ndarray:
 #
 #__IRDIRECTSDK_API__ int evo_irimager_get_thermal_palette_image(int w_t, int h_t, unsigned short* data_t, int w_p, int h_p, unsigned char* data_p );
 #
-def get_thermal_palette_image(width: int, height: int) -> Tuple[int, int]:
-    w = ctypes.byref(ctypes.c_int(width))
-    h = ctypes.byref(ctypes.c_int(height))
-    thermalData = np.empty((height, width), dtype=np.uint16)
-    paletteData = np.empty((height, width, 3), dtype=np.uint8)
+def get_thermal_palette_image(t_width: int, t_height: int, p_width: int, p_height) -> Tuple[int, int]:
+    t_w = ctypes.byref(ctypes.c_int(t_width))
+    t_h = ctypes.byref(ctypes.c_int(t_height))
+    p_w = ctypes.byref(ctypes.c_int(p_width))
+    p_h = ctypes.byref(ctypes.c_int(p_height))
+    thermalData = np.empty((t_height, t_width), dtype=np.uint16)
+    paletteData = np.empty((p_height, p_width, 3), dtype=np.uint8)
     thermalDataPointer = thermalData.ctypes.data_as(ctypes.POINTER(ctypes.c_ushort))
     paletteDataPointer = paletteData.ctypes.data_as(ctypes.POINTER(ctypes.c_ubyte))
-    _ = lib.evo_irimager_get_thermal_palette_image(w, h, thermalDataPointer, w, h, paletteDataPointer)
+    _ = lib.evo_irimager_get_thermal_palette_image(t_w, t_h, thermalDataPointer, p_w, p_h, paletteDataPointer)
     return (thermalData, paletteData)
 
 #
