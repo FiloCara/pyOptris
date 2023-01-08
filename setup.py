@@ -5,12 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyOptris", 
-    version="0.0.1",
+    version="0.1.0",
     author="Filippo Cara",
     author_email="fili.cara@gmail.com",
-    description="A simple package to use the Evocortex directbinding in python",
+    description="A simple package to use the Evocortex direct-binding in python",
     long_description=long_description,
     packages=setuptools.find_packages(),
+    install_requires=["numpy"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
