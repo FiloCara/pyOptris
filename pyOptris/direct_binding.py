@@ -1,6 +1,6 @@
 import sys
 import ctypes
-from typing import Tuple
+from typing import Optional, Tuple
 from enum import Enum
 import numpy as np
 
@@ -9,7 +9,7 @@ DEFAULT_LINUX_PATH = "/usr/lib/libirdirectsdk.so"
 lib = None
 
 # Function to load the DLL accordingly to the OS
-def load_DLL(dll_path: str):
+def load_DLL(dll_path: str) -> None:
     global lib
     if (sys.platform == "linux"):
         path = dll_path if dll_path is not None else DEFAULT_LINUX_PATH
@@ -28,7 +28,7 @@ def load_DLL(dll_path: str):
 #
 # __IRDIRECTSDK_API__ int evo_irimager_usb_init(const char* xml_config, const char* formats_def, const char* log_file);
 #
-def usb_init(xml_config: str, formats_def: str = None, log_file: str = None) -> int:
+def usb_init(xml_config: str, formats_def: Optional[str] = None, log_file: Optional[str] = None) -> int:
     return lib.evo_irimager_usb_init(xml_config.encode(), None if formats_def is None else formats_def.encode(), None if log_file is None else log_file.encode())
 
 #
@@ -130,7 +130,7 @@ def get_palette_image(width: int, height: int) -> np.ndarray:
 #
 #__IRDIRECTSDK_API__ int evo_irimager_get_thermal_palette_image(int w_t, int h_t, unsigned short* data_t, int w_p, int h_p, unsigned char* data_p );
 #
-def get_thermal_palette_image(t_width: int, t_height: int, p_width: int, p_height) -> Tuple[int, int]:
+def get_thermal_palette_image(t_width: int, t_height: int, p_width: int, p_height) -> Tuple[np.ndarray, np.ndarray]:
     t_w = ctypes.byref(ctypes.c_int(t_width))
     t_h = ctypes.byref(ctypes.c_int(t_height))
     p_w = ctypes.byref(ctypes.c_int(p_width))
