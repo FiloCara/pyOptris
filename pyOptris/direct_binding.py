@@ -14,7 +14,7 @@ def load_DLL(dll_path: str) -> None:
     global lib
     if sys.platform == "linux":
         path = dll_path if dll_path is not None else DEFAULT_LINUX_PATH
-        lib = ctypes.CDLL(DEFAULT_LINUX_PATH)
+        lib = ctypes.CDLL(path)
 
     elif sys.platform == "win32":
         path = dll_path if dll_path is not None else DEFAULT_WIN_PATH
