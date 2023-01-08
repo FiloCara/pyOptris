@@ -1,7 +1,8 @@
-import sys
 import ctypes
-from typing import Optional, Tuple
+import sys
 from enum import Enum
+from typing import Optional, Tuple
+
 import numpy as np
 
 DEFAULT_WIN_PATH = "..//..//irDirectSDK//sdk//x64//libirimager.dll"
@@ -11,14 +12,15 @@ lib = None
 # Function to load the DLL accordingly to the OS
 def load_DLL(dll_path: str) -> None:
     global lib
-    if (sys.platform == "linux"):
+    if sys.platform == "linux":
         path = dll_path if dll_path is not None else DEFAULT_LINUX_PATH
         lib = ctypes.CDLL(DEFAULT_LINUX_PATH)
 
-    elif (sys.platform == "win32"):
+    elif sys.platform == "win32":
         path = dll_path if dll_path is not None else DEFAULT_WIN_PATH
         lib = ctypes.CDLL(path)
-    
+
+
 #
 # @brief Initializes an IRImager instance connected to this computer via USB
 # @param[in] xml_config path to xml config
@@ -28,8 +30,15 @@ def load_DLL(dll_path: str) -> None:
 #
 # __IRDIRECTSDK_API__ int evo_irimager_usb_init(const char* xml_config, const char* formats_def, const char* log_file);
 #
-def usb_init(xml_config: str, formats_def: Optional[str] = None, log_file: Optional[str] = None) -> int:
-    return lib.evo_irimager_usb_init(xml_config.encode(), None if formats_def is None else formats_def.encode(), None if log_file is None else log_file.encode())
+def usb_init(
+    xml_config: str, formats_def: Optional[str] = None, log_file: Optional[str] = None
+) -> int:
+    return lib.evo_irimager_usb_init(
+        xml_config.encode(),
+        None if formats_def is None else formats_def.encode(),
+        None if log_file is None else log_file.encode(),
+    )
+
 
 #
 # @brief Initializes the TCP connection to the daemon process (non-blocking)
@@ -42,6 +51,7 @@ def usb_init(xml_config: str, formats_def: Optional[str] = None, log_file: Optio
 def tcp_init(ip: str, port: int) -> int:
     return lib.evo_irimager_tcp_init(ip.encode(), port)
 
+
 #
 # @brief Disconnects the camera, either connected via USB or TCP
 # @return 0 on success, -1 on error
@@ -50,6 +60,7 @@ def tcp_init(ip: str, port: int) -> int:
 #
 def terminate() -> int:
     return lib.evo_irimager_terminate(None)
+
 
 #
 # @brief Accessor to image width and height
@@ -62,8 +73,11 @@ def terminate() -> int:
 def get_thermal_image_size() -> Tuple[int, int]:
     width = ctypes.c_int()
     height = ctypes.c_int()
-    _ = lib.evo_irimager_get_thermal_image_size(ctypes.byref(width), ctypes.byref(height))
+    _ = lib.evo_irimager_get_thermal_image_size(
+        ctypes.byref(width), ctypes.byref(height)
+    )
     return width.value, height.value
+
 
 #
 # @brief Accessor to width and height of false color coded palette image
@@ -76,8 +90,11 @@ def get_thermal_image_size() -> Tuple[int, int]:
 def get_palette_image_size() -> Tuple[int, int]:
     width = ctypes.c_int()
     height = ctypes.c_int()
-    _ = lib.evo_irimager_get_palette_image_size(ctypes.byref(width), ctypes.byref(height))
+    _ = lib.evo_irimager_get_palette_image_size(
+        ctypes.byref(width), ctypes.byref(height)
+    )
     return width.value, height.value
+
 
 #
 # @brief Accessor to thermal image by reference
@@ -97,6 +114,7 @@ def get_thermal_image(width: int, height: int) -> np.ndarray:
     thermalDataPointer = thermalData.ctypes.data_as(ctypes.POINTER(ctypes.c_ushort))
     _ = lib.evo_irimager_get_thermal_image(w, h, thermalDataPointer)
     return thermalData
+
 
 #
 # @brief Accessor to an RGB palette image by reference
@@ -118,6 +136,7 @@ def get_palette_image(width: int, height: int) -> np.ndarray:
         retVal = lib.evo_irimager_get_palette_image(w, h, paletteDataPointer)
     return paletteData
 
+
 #
 # @brief Accessor to an RGB palette image and a thermal image by reference
 # @param[in] w_t width of thermal image
@@ -128,9 +147,11 @@ def get_palette_image(width: int, height: int) -> np.ndarray:
 # @param[out] data_p data pointer to unsigned char array allocate by the user (size of 3 * w * h)
 # @return error code: 0 on success, -1 on error, -2 on fatal error (only TCP connection)
 #
-#__IRDIRECTSDK_API__ int evo_irimager_get_thermal_palette_image(int w_t, int h_t, unsigned short* data_t, int w_p, int h_p, unsigned char* data_p );
+# __IRDIRECTSDK_API__ int evo_irimager_get_thermal_palette_image(int w_t, int h_t, unsigned short* data_t, int w_p, int h_p, unsigned char* data_p );
 #
-def get_thermal_palette_image(t_width: int, t_height: int, p_width: int, p_height) -> Tuple[np.ndarray, np.ndarray]:
+def get_thermal_palette_image(
+    t_width: int, t_height: int, p_width: int, p_height
+) -> Tuple[np.ndarray, np.ndarray]:
     t_w = ctypes.byref(ctypes.c_int(t_width))
     t_h = ctypes.byref(ctypes.c_int(t_height))
     p_w = ctypes.byref(ctypes.c_int(p_width))
@@ -139,8 +160,11 @@ def get_thermal_palette_image(t_width: int, t_height: int, p_width: int, p_heigh
     paletteData = np.empty((p_height, p_width, 3), dtype=np.uint8)
     thermalDataPointer = thermalData.ctypes.data_as(ctypes.POINTER(ctypes.c_ushort))
     paletteDataPointer = paletteData.ctypes.data_as(ctypes.POINTER(ctypes.c_ubyte))
-    _ = lib.evo_irimager_get_thermal_palette_image(t_w, t_h, thermalDataPointer, p_w, p_h, paletteDataPointer)
+    _ = lib.evo_irimager_get_thermal_palette_image(
+        t_w, t_h, thermalDataPointer, p_w, p_h, paletteDataPointer
+    )
     return (thermalData, paletteData)
+
 
 #
 # @brief sets palette format to daemon.
@@ -175,8 +199,10 @@ class ColouringPalette(Enum):
     RAINBOW_HI = 10
     ALARM_RED = 11
 
+
 def set_palette(colouringPalette: ColouringPalette) -> int:
     return lib.evo_irimager_set_palette(colouringPalette)
+
 
 #
 # @brief sets palette scaling method
@@ -196,8 +222,10 @@ class PaletteScalingMethod(Enum):
     SIGMA1 = 3
     SIGMA3 = 4
 
+
 def set_palette_scale(paletteScalingMethod: PaletteScalingMethod) -> int:
     return lib.evo_irimager_set_palette_scale(paletteScalingMethod)
+
 
 #
 # @brief sets shutter flag control mode
@@ -210,8 +238,10 @@ class ShutterMode(Enum):
     MANUAL = 0
     AUTO = 1
 
+
 def set_shutter_mode(shutterMode: ShutterMode) -> int:
     return lib.evo_irimager_set_shutter_mode(shutterMode)
+
 
 #
 # @brief forces a shutter flag cycle
@@ -222,6 +252,7 @@ def set_shutter_mode(shutterMode: ShutterMode) -> int:
 def trigger_shutter_flag() -> int:
     return lib.evo_irimager_trigger_shutter_flag()
 
+
 #
 # @brief sets the minimum and maximum remperature range to the camera (also configurable in xml-config)
 # @return error code: 0 on success, -1 on error, -2 on fatal error (only TCP connection)
@@ -230,6 +261,7 @@ def trigger_shutter_flag() -> int:
 #
 def set_temperature_range(min: int, max: int) -> int:
     return lib.evo_irimager_set_temperature_range(min, max)
+
 
 #
 # @brief sets radiation properties, i.e. emissivity and transmissivity parameters (not implemented for TCP connection, usb mode only)
@@ -240,11 +272,16 @@ def set_temperature_range(min: int, max: int) -> int:
 #
 # __IRDIRECTSDK_API__ int evo_irimager_set_radiation_parameters(float emissivity, float transmissivity, float tAmbient);
 #
-def set_radiation_parameters(emissivity: float, transmissivity: float, ambientTemperature: float) -> int:
-    return lib.evo_irimager_set_radiation_parameters(emissivity, transmissivity, ambientTemperature)
+def set_radiation_parameters(
+    emissivity: float, transmissivity: float, ambientTemperature: float
+) -> int:
+    return lib.evo_irimager_set_radiation_parameters(
+        emissivity, transmissivity, ambientTemperature
+    )
+
 
 #
-# @brief 
+# @brief
 # @return error code: 0 on success, -1 on error
 #
 # __IRDIRECTSDK_API__ int evo_irimager_to_palette_save_png(unsigned short* thermal_data, int w, int h, const char* path, int palette, int palette_scale);
@@ -260,6 +297,7 @@ def set_radiation_parameters(emissivity: float, transmissivity: float, ambientTe
 def set_focus_motor_position(position: float) -> int:
     return lib.evo_irimager_set_focusmotor_pos(position)
 
+
 #
 # @brief Get the position of the focusmotor
 # @param[out] posOut Data pointer to float for current fucos motor position in % (< 0 if no focusmotor available)
@@ -272,6 +310,7 @@ def get_focus_motor_position() -> float:
     _ = lib.evo_irimager_get_focusmotor_pos(ctypes.byref(position))
     return position.value
 
+
 #
 # Launch TCP daemon
 # @return error code: 0 on success, -1 on error, -2 on fatal error (only TCP connection)
@@ -281,6 +320,7 @@ def get_focus_motor_position() -> float:
 def daemon_launch() -> int:
     return lib.evo_irimager_daemon_launch(None)
 
+
 #
 # Check whether daemon is already running
 # @return error code: 0 daemon is already active, -1 daemon is not started yet
@@ -289,6 +329,7 @@ def daemon_launch() -> int:
 #
 def daemon_is_running() -> int:
     return lib.evo_irimager_daemon_is_running(None)
+
 
 #
 # Kill TCP daemon

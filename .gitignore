@@ -1,3 +1,4 @@
 __pycache__
 pyOptris/__pycache__
 images
+.mypy_cache/
