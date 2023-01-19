@@ -201,7 +201,7 @@ class ColouringPalette(Enum):
 
 
 def set_palette(colouringPalette: ColouringPalette) -> int:
-    return lib.evo_irimager_set_palette(colouringPalette)
+    return lib.evo_irimager_set_palette(colouringPalette.value)
 
 
 #
@@ -224,7 +224,7 @@ class PaletteScalingMethod(Enum):
 
 
 def set_palette_scale(paletteScalingMethod: PaletteScalingMethod) -> int:
-    return lib.evo_irimager_set_palette_scale(paletteScalingMethod)
+    return lib.evo_irimager_set_palette_scale(paletteScalingMethod.value)
 
 
 #
@@ -240,7 +240,7 @@ class ShutterMode(Enum):
 
 
 def set_shutter_mode(shutterMode: ShutterMode) -> int:
-    return lib.evo_irimager_set_shutter_mode(shutterMode)
+    return lib.evo_irimager_set_shutter_mode(shutterMode.value)
 
 
 #
