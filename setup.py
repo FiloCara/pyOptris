@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyOptris", 
-    version="0.1.0",
+    version="0.2.0",
     author="Filippo Cara",
     author_email="fili.cara@gmail.com",
     description="A simple package to use the Evocortex direct-binding in python",
