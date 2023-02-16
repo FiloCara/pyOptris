@@ -276,7 +276,9 @@ def set_radiation_parameters(
     emissivity: float, transmissivity: float, ambientTemperature: float
 ) -> int:
     return lib.evo_irimager_set_radiation_parameters(
-        emissivity, transmissivity, ambientTemperature
+        ctypes.c_float(emissivity),
+        ctypes.c_float(transmissivity),
+        ctypes.c_float(ambientTemperature),
     )
 
 
@@ -295,7 +297,7 @@ def set_radiation_parameters(
 # __IRDIRECTSDK_API__ int evo_irimager_set_focusmotor_pos(float pos);
 #
 def set_focus_motor_position(position: float) -> int:
-    return lib.evo_irimager_set_focusmotor_pos(position)
+    return lib.evo_irimager_set_focusmotor_pos(ctypes.c_float(position))
 
 
 #
